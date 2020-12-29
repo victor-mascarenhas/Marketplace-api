@@ -1,4 +1,6 @@
 const MSGS = {
+    'CATEGORY_404' : 'Categoria não encontrada',
+    'CANTDELETE': 'Não é possível deletar categorias que estão atreladas a um produto',
     'FILE_INVALID_FORMAT' : 'Por favor, envie um arquivo .jpeg ou .png!',
     'FILE_NOT_SENT' : 'Por favor, envie o arquivo!',
     'FILE_UPLOADED' : 'Arquivo enviado com sucesso.',    
@@ -13,6 +15,7 @@ const MSGS = {
     'PARTNER404' : 'Parceiro não encontrado',
     'PARTNER_NAME_REQUIRED' : 'O campo name é obrigatório',
     'WITHOUT_TOKEN' : 'Token não enviado',
+    'PRODUCT_404' : 'Produto não encontrado'
 }
 
 module.exports = MSGS

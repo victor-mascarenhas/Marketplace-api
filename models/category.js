@@ -5,9 +5,6 @@ const CategorySchema = new mongoose.Schema({
         type : String,
         required : true
     },
-    icon: {
-        type: String     
-    },
     status: {
         type: Boolean,
         default: true
