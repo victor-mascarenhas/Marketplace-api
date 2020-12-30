@@ -23,7 +23,6 @@ app.use(fileUpload({
 //Define Routes
 app.get('/', (req, res) => res.send('Hello!'))
 app.use('/auth', require('./routes/api/auth'))
-app.use('/authpartner', require('./routes/api/authPartner'))
 app.use('/user', require('./routes/api/user'))
 app.use('/partner', require('./routes/api/partner'))
 app.use('/category', require('./routes/api/category'))

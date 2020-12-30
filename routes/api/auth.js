@@ -19,7 +19,7 @@ router.post('/',[
         const jwtSecret = process.env.jwtSecret || config.get('jwtSecret')
 
         try{
-        let user = await User.findOne({ email }).select('id password email name')
+        let user = await User.findOne({ email }).select('id password email name partner')
         if(!user){
             return res.status(400).json({ errors: [{ msg: MSGS.USER404 }] })
         }else{
@@ -31,7 +31,8 @@ router.post('/',[
                     user: {
                     id: user.id,
                     name: user.name,
-                    email: user.email                    
+                    email: user.email, 
+                    partner: user.partner 
                     }
                 }
                 jwt.sign(payload, jwtSecret, { expiresIn: '5 days'},

@@ -19,7 +19,7 @@ const ProductSchema = new mongoose.Schema({
     },
     partner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'partner',
+        ref: 'user',
         required: true
     },
     category: {

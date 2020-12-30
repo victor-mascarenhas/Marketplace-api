@@ -8,11 +8,12 @@ const UserSchema = new Schema({
         type: String,
         select : false
     },
-    shopping_cart: [{
+    products: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'product'
     }],
-    account_confirmed: Boolean
+    account_confirmed: Boolean,
+    partner: Boolean
     
 });
 

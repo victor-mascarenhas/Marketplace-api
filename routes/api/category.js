@@ -3,6 +3,7 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const Category = require('../../models/category');
 const Product = require('../../models/product');
+const partner = require('../../middleware/partner')
 const MSGS = require('../../messages')
 const auth = require('../../middleware/auth');
 
@@ -12,7 +13,7 @@ const auth = require('../../middleware/auth');
 //@acess  Public
 router.post('/', [
     check('name', "Name Required").not().isEmpty()
-], auth, async (req, res, next) => {
+], auth, partner, async (req, res, next) => {
     try {
         let { name } = req.body
         const errors = validationResult(req)
@@ -68,7 +69,7 @@ router.get('/:id', async (req, res, next) => {
 //@route   DELETE/category/:id
 //@desc    DELETE category
 //@access  Public
-router.delete('/:id', auth, async (req, res, next) => {
+router.delete('/:id', auth, partner, async (req, res, next) => {
     try {
         const id = req.params.id
         let category = await Category.findOne({ _id: id })
@@ -93,7 +94,7 @@ router.delete('/:id', auth, async (req, res, next) => {
 //@route   PATCH/category/:id
 //@desc    PARTIAL UPDATE category
 //@access  Public
-router.patch('/:id', auth, async (req, res, next) => {
+router.patch('/:id', auth, partner, async (req, res, next) => {
     try {
         const id = req.params.id
         const update = { $set: req.body }
