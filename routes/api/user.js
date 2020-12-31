@@ -5,6 +5,7 @@ const MSGS = require('../../messages')
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const auth = require('../../middleware/auth')
+const config = require('config');
 
 // @route    GET /users
 // @desc     LIST users
@@ -25,7 +26,14 @@ router.get('/', auth,async (req, res, next) => {
 router.get('/:id', auth, async (req, res, next) => {
   try {
     const id = req.params.id
-    const user = await User.findById(id)
+    const user = await User.findById(id).populate('products')
+    const BUCKET_PUBLIC_PATH = process.env.BUCKET_PUBLIC_PATH || config.get('BUCKET_PUBLIC_PATH')
+    let products = user.products
+    products = products.map(function (product) {
+    product.photo = `${BUCKET_PUBLIC_PATH}${product.photo}`
+    return product
+  })
+    
     if(user){
       res.json(user)
     }else{
