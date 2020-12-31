@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../../models/product');
+const User = require('../../models/user');
 const MSGS = require('../../messages');
 const auth = require('../../middleware/auth');
 const partner = require('../../middleware/partner')
@@ -15,10 +16,16 @@ router.post('/', auth, partner, file, async (req, res, next) => {
     try {
         req.body.partner = req.user.id
         req.body.photo = `product/${req.body.photo_name}`
-        let product = new Product(req.body)  
-
+        let product = new Product(req.body)
         await product.save()
+        
         if (product.id) {
+
+            let user = await User.findById(req.user.id)
+            user.products.push(product.id)
+            await user.save()
+
+
             const BUCKET_PUBLIC_PATH = process.env.BUCKET_PUBLIC_PATH || config.get('BUCKET_PUBLIC_PATH')
             product.photo = `${BUCKET_PUBLIC_PATH}${product.photo}`
             res.status(201).json(product);
@@ -35,7 +42,7 @@ router.post('/', auth, partner, file, async (req, res, next) => {
 //@access  Public
 router.get('/', async (req, res, next) => {
     try {
-        let products = await Product.find(req.query).populate('category partner')
+        let products = await Product.find(req.query).populate({path: 'category partner', select: 'name'})
         const BUCKET_PUBLIC_PATH = process.env.BUCKET_PUBLIC_PATH || config.get('BUCKET_PUBLIC_PATH')
         products = products.map(function (product) {
             product.photo = `${BUCKET_PUBLIC_PATH}${product.photo}`
@@ -55,7 +62,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
-        const product = await Product.findOne({ _id: id }).populate('category partner')
+        const product = await Product.findOne({ _id: id }).populate({path: 'category partner', select: 'name'})
         if (product) {
             res.json(product)
         } else {
@@ -75,7 +82,11 @@ router.delete('/:id', auth, partner, async (req, res, next) => {
     try {
         const id = req.params.id
         const product = await Product.findOneAndDelete({ _id: id })
+        
         if (product) {
+            let user = await User.findById(req.user.id)
+            user.products.pull(id)
+            await user.save()
             res.json(product)
         } else {
             res.status(404).send({ "error": MSGS.PRODUCT_404 })
