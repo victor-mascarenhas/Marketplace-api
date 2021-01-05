@@ -105,6 +105,8 @@ router.patch('/:id', auth, partner, file, async (req, res, next) => {
     try {
         if (req.body.photo_name) {
             req.body.photo = `product/${req.body.photo_name}`
+        }else{
+            delete req.body.photo
         }
         const id = req.params.id
         const update = { $set: req.body }
