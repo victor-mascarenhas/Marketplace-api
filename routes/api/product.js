@@ -62,7 +62,11 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
-        const product = await Product.findOne({ _id: id }).populate({path: 'category partner', select: 'name'})
+        let product = await Product.findOne({ _id: id }).populate('category partner')
+        
+        const BUCKET_PUBLIC_PATH = process.env.BUCKET_PUBLIC_PATH || config.get('BUCKET_PUBLIC_PATH')        
+        product.photo = `${BUCKET_PUBLIC_PATH}${product.photo}`
+    
         if (product) {
             res.json(product)
         } else {

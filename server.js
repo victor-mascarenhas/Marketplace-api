@@ -27,6 +27,7 @@ app.use('/user', require('./routes/api/user'))
 app.use('/partner', require('./routes/api/partner'))
 app.use('/category', require('./routes/api/category'))
 app.use('/product', require('./routes/api/product'))
+app.use('/shopcart', require('./routes/api/shoppingCart'))
 
 
 const server = app.listen(PORT, () => {console.log(`Listening on: ${PORT}`)})

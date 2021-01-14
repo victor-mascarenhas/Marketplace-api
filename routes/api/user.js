@@ -23,7 +23,7 @@ router.get('/', auth,async (req, res, next) => {
 // @route    GET /users/:id
 // @desc     get one users
 // @access   Private
-router.get('/:id', auth, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const id = req.params.id
     const user = await User.findById(id).populate('products')
