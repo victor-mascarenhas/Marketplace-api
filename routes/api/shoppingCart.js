@@ -21,7 +21,6 @@ router.post('/', auth, async(req, res, next) => {
 router.delete('/', auth, async(req, res, next) => {
     try {        
         data = req.body
-        console.log(data)
         let user = await User.findById(req.user.id)
         user.products.pull(req.body.id)
         await user.save()

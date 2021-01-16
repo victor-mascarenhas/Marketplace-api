@@ -26,8 +26,9 @@ router.get('/', auth,async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const id = req.params.id
-    const user = await User.findById(id).populate('products')
+    let user = await User.findById(id).populate('products')
     const BUCKET_PUBLIC_PATH = process.env.BUCKET_PUBLIC_PATH || config.get('BUCKET_PUBLIC_PATH')
+    user.photo = `${BUCKET_PUBLIC_PATH}${user.photo}`
     let products = user.products
     products = products.map(function (product) {
     product.photo = `${BUCKET_PUBLIC_PATH}${product.photo}`

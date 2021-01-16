@@ -8,6 +8,10 @@ const UserSchema = new Schema({
         type: String,
         select : false
     },
+    photo: {
+        type : String,
+        default: "noimage.jpg"
+    },
     products: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'product'
